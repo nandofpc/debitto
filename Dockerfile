@@ -1,6 +1,7 @@
 FROM php:8.0-apache
 RUN apt-get update && apt-get install -y
-RUN docker-php-ext-install mysqli pdo_mysql
+#extension refer: https://github.com/mlocati/docker-php-extension-installer
+RUN docker-php-ext-install mysqli pdo_mysql imap pdo_sqlsrv
 
 
 #RUN mkdir -p /etc/apache2/ssl
