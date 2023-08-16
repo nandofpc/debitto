@@ -1,0 +1,43 @@
+version: "3"
+services:
+  php-ssl:
+    build:
+     context: ./
+     dockerfile: Dockerfile
+    networks:
+      - frontend
+      - backend
+    restart: always
+    ports:
+     - 9080:80
+     - 9443:443
+    volumes:
+     - ./www/:/var/www/html
+
+    depends_on:
+     - db
+    links:
+     - db
+
+  db:
+    container_name: sql1
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    networks:
+     - backend
+    restart: always
+    ports:
+     - "1433:1433"
+    environment:
+     - MSSQL_SA_PASSWORD=Rh@b74@@
+
+    volumes:
+     - ./db:/var/lib/sql1
+
+networks:
+   frontend:
+   backend:
+
+volumes:
+   db:
+
+
