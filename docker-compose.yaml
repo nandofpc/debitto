@@ -36,6 +36,8 @@ services:
 
   #sqlserver:
     container_name: sql1
+    #image: mcr.microsoft.com/mssql/server:2022-latest
+    #image: mcr.microsoft.com/mssql/server:2017-latest    
     image: mcr.microsoft.com/mssql/server:2019-latest
     networks:
       - backend
@@ -46,7 +48,7 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - ./db:/var/lib/sql1
+      - ./db:/var/opt/mssql
 
   mssqltools:
     image: mcr.microsoft.com/mssql-tools
