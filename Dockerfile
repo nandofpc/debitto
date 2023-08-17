@@ -1,22 +1,24 @@
-FROM php:8.0-apache
-RUN apt-get update && apt-get install -y
-#extension refer: https://github.com/mlocati/docker-php-extension-installer
-RUN docker-php-ext-install mysqli pdo_mysql imap pdo_sqlsrv
+FROM php:8.1.6-fpm-alpine
 
+WORKDIR /var/www/html
 
-#RUN mkdir -p /etc/apache2/ssl
-#COPY ./cert.pem /etc/apache2/ssl
-#COPY ./private.pem /etc/apache2/ssl
-#COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
-#COPY ./timezone /etc/timezone
-#RUN apk add --update --no-cache libgd libpng-dev libjpeg-turbo-dev freetype-dev -y
-#RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-#RUN a2enmod ssl 
-#RUN a2enmod rewrite
-#CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+RUN apk update && apk add \
+    build-base \
+    git \
+    curl \
+    zip \
+    libzip-dev \
+    libpq-dev \
+    postgresql \
+    postgresql-client \
+    unzip \
+    nano
 
-#RUN service apache2 restart
-#RUN chmod 775 -R /var/www/html
-EXPOSE 80
-EXPOSE 443
+RUN docker-php-ext-configure pgsql 
+RUN docker-php-ext-install pdo pdo_pgsql pgsql zip exif pcntl mysqli
 
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+USER root
+
+RUN chmod 777 -R /var/www/html
