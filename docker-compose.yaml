@@ -48,7 +48,8 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - ./db:/var/opt/mssql
+      #- ./db:/var/opt/mssql
+      - ./db:/var/lib/sql1
 
   mssqltools:
     image: mcr.microsoft.com/mssql-tools
