@@ -1,6 +1,7 @@
-FROM php:8.1.6-fpm-alpine
+#FROM php:8.1.6-fpm-alpine
+FROM php:8.0-apache
 
-WORKDIR /var/www/html
+#WORKDIR /var/www/html
 
 RUN apk update && apk add \
     build-base \
@@ -19,6 +20,8 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql zip exif pcntl mysqli
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-USER root
+#USER root
 
-RUN chmod 777 -R /var/www/html
+#RUN chmod 777 -R /var/www/html
+EXPOSE 80
+EXPOSE 443
