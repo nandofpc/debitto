@@ -1,3 +1,4 @@
+#https://learn.microsoft.com/pt-br/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&pivots=cs1-bash
 version: "3"
 services:
   php-ssl:
@@ -20,18 +21,41 @@ services:
      - db
 
   db:
-    container_name: sql1
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    networks:
-     - backend
-    restart: always
-    ports:
-     - "1433:1433"
-    environment:
-     - MSSQL_SA_PASSWORD=Rh@b74@@
+    #container_name: sql1
+    #image: mcr.microsoft.com/mssql/server:2022-latest
+    #networks:
+    # - backend
+    #restart: always
+    #ports:
+    # - "1433:1433"
+    #environment:
+    # - MSSQL_SA_PASSWORD=Rh@b74@@
 
+    #volumes:
+    # - ./db:/var/lib/sql1
+
+  #sqlserver:
+    container_name: sql1
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - backend
+    environment:
+      SA_PASSWORD: "Rh@b74@@2023"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+
+  mssqltools:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - db
     volumes:
-     - ./db:/var/lib/sql1
+      - ./01-BaseGeografica.sql:/tmp/01-BaseGeografica.sql
+      - ./02-BaseGeografica.sql:/tmp/02-BaseGeografica.sql
+      - ./init-basegeografica.sh:/tmp/init-basegeografica.sh
+    command: /bin/bash ./tmp/init-basegeografica.sh
+
 
 networks:
    frontend:
