@@ -1,0 +1,19 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./log:/var/opt/mssql/log
+      - ./secrets:/var/opt/mssql/secrets
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=123456789
+
+https://stackoverflow.com/questions/63133630/is-it-possible-to-create-a-volume-with-microsoft-sql-server-docker-container
+Then, to prevent permission denied error create data,log and secrets folder and change their permission:
+
+mkdir data && sudo chown 10001 data
+mkdir log && sudo chown 10001 log
+mkdir secrets && sudo chown 10001 secrets

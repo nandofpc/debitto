@@ -14,26 +14,32 @@ services:
      - 9443:443
     volumes:
      - ./www/:/var/www/html
-
+     - ./php-make/upload.ini:/usr/local/etc/php/php.ini
+    
     depends_on:
      - db
+     - mysql
     links:
      - db
-
+     - mysql
+  
+  mysql:
+    container_name: mysql
+    image: mysql:latest #mysql:8
+    networks:
+     - backend
+    restart: always
+    ports:
+     - "3306:3306"
+    environment:
+     - MYSQL_ROOT_PASSWORD=Rh@b74@@2023
+     - MYSQL_USER=debittouser
+     - MYSQL_PASSWORD=bb0ticket002
+     - MYSQL_DATABASE=dev_debitto
+    volumes:
+     - ./db/mysql:/var/lib/mysql
+   
   db:
-    #container_name: sql1
-    #image: mcr.microsoft.com/mssql/server:2022-latest
-    #networks:
-    # - backend
-    #restart: always
-    #ports:
-    # - "1433:1433"
-    #environment:
-    # - MSSQL_SA_PASSWORD=Rh@b74@@
-
-    #volumes:
-    # - ./db:/var/lib/sql1
-
   #sqlserver:
     container_name: sql1
     #image: mcr.microsoft.com/mssql/server:2022-latest
@@ -48,8 +54,9 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      #- ./db:/var/opt/mssql
-      - ./db:/var/lib/sql1
+      - ./db/mssql/data:/var/opt/mssql/data
+      - ./db/mssql/log:/var/opt/mssql/log
+      - ./db/mssql/secrets:/var/opt/mssql/secrets
 
   mssqltools:
     image: mcr.microsoft.com/mssql-tools
