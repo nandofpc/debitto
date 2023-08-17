@@ -53,9 +53,9 @@ services:
     depends_on:
       - db
     volumes:
-      - ./src/01-BaseGeografica.sql:/tmp/01-BaseGeografica.sql
-      - ./src/02-BaseGeografica.sql:/tmp/02-BaseGeografica.sql
-      - ./src/init-basegeografica.sh:/tmp/init-basegeografica.sh
+      - ./01-BaseGeografica.sql:/tmp/01-BaseGeografica.sql
+      - ./02-BaseGeografica.sql:/tmp/02-BaseGeografica.sql
+      - ./init-basegeografica.sh:/tmp/init-basegeografica.sh
     command: /bin/bash ./tmp/init-basegeografica.sh
 
 
