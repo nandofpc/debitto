@@ -1,5 +1,5 @@
 FROM php:8.0-apache
-RUN apt-get update && ap-get upgrade -y && apt-get install -y
+RUN apt-get update && apt-get upgrade -y && apt-get install -y
 #extension refer: https://github.com/mlocati/docker-php-extension-installer
 RUN docker-php-ext-install mysqli
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
